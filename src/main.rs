@@ -1,3 +1,4 @@
+use actix_files::Files;
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 use clap::Parser;
 use streamy::{
@@ -32,6 +33,7 @@ async fn main() -> std::io::Result<()> {
                 // TODO: refactor
                 config: config::Args::parse(),
             }))
+            .service(Files::new("/media", config::Args::parse().media_path).show_files_listing())
             .service(hello)
             .service(list_media)
     })

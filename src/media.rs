@@ -43,7 +43,8 @@ fn scan_media(media_path: &PathBuf) -> Vec<String> {
             let path = file.path();
             let path = path.to_str()?;
             let mut path = path.to_string();
-            path.drain(..2);
+            // Remove the media path from the path
+            path.replace_range(0..media_path.to_str()?.len(), "");
             Some(path)
         })
         .collect()
