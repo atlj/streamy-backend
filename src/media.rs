@@ -36,9 +36,11 @@ fn scan_media(media_path: &PathBuf) -> Vec<String> {
                 return None;
             }
             if let Some(ext) = file.path().extension() {
-                if ext != "mp4" && ext != "mkv" && ext != "avi" {
+                if ext != "mp4" && ext != "mov" && ext != "mkv" && ext != "avi" {
                     return None;
                 }
+            } else {
+                return None;
             }
             let path = file.path();
             let path = path.to_str()?;
