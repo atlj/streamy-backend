@@ -7,6 +7,7 @@ use notify::Watcher;
 use streamy::{
     config::{self, Args},
     media::scan_media,
+    watcher,
 };
 
 struct AppState {
@@ -36,20 +37,9 @@ async fn main() -> std::io::Result<()> {
         media_path,
     } = config.clone();
 
-    let Args {
-        media_path: media_path_watcher,
-        ..
-    } = config.clone();
-
     let media_files = Arc::new(Mutex::new(scan_media(&media_path)));
-    let media_files_watcher = media_files.clone();
 
-    let mut watcher = notify::recommended_watcher(move |_| {
-        if let Ok(mut media_files) = media_files_watcher.lock() {
-            *media_files = scan_media(&media_path_watcher);
-        }
-    })
-    .unwrap();
+    let mut watcher = watcher::create_watcher(media_files.clone(), media_path.clone()).unwrap();
     watcher
         .watch(&media_path, notify::RecursiveMode::Recursive)
         .unwrap();
