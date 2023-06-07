@@ -11,3 +11,4 @@ actix-web = "4"
 clap = { version = "4.3.2", features = ["derive"] }
 notify = { version = "6.0.0", default-features = false, features = ["macos_kqueue"] }
 walkdir = "2"
+serde = { version = "1.0", features = ["derive"] }
