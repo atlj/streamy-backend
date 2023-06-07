@@ -18,8 +18,8 @@ async fn hello() -> impl Responder {
 }
 
 #[get("/list-media")]
-async fn list_media(state: AppData) -> impl Responder {
-    let media_files = scan_media(&state.config.media_path);
+async fn list_media(data: AppData) -> impl Responder {
+    let media_files = scan_media(&data.config.media_path);
     HttpResponse::Ok().json(media_files)
 }
 
@@ -29,11 +29,15 @@ async fn main() -> std::io::Result<()> {
     let Args { address, port, .. } = config.clone();
 
     let server = HttpServer::new(move || {
+        let state = AppState {
+            config: config.clone(),
+        };
+
+        let files_service = Files::new("/media", &config.media_path).show_files_listing();
+
         App::new()
-            .app_data(web::Data::new(AppState {
-                config: config.clone(),
-            }))
-            .service(Files::new("/media", &config.media_path).show_files_listing())
+            .app_data(state)
+            .service(files_service)
             .service(hello)
             .service(list_media)
     });
