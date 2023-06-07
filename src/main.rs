@@ -3,7 +3,7 @@ use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 use clap::Parser;
 use streamy::{
     config::{self, Args},
-    media::MediaList,
+    media::scan_media,
 };
 
 // This struct represents state
@@ -20,8 +20,8 @@ async fn hello() -> impl Responder {
 
 #[get("/list-media")]
 async fn list_media(state: AppData) -> impl Responder {
-    let media_list = MediaList::new(&state.config.media_path);
-    HttpResponse::Ok().json(media_list.files)
+    let media_files = scan_media(&state.config.media_path);
+    HttpResponse::Ok().json(media_files)
 }
 
 #[actix_web::main]
