@@ -6,7 +6,6 @@ use streamy::{
     media::scan_media,
 };
 
-// This struct represents state
 struct AppState {
     config: Args,
 }
@@ -27,17 +26,17 @@ async fn list_media(state: AppData) -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let config = config::Args::parse();
-    HttpServer::new(|| {
+    let Args { address, port, .. } = config.clone();
+
+    let server = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(AppState {
-                // TODO: refactor
-                config: config::Args::parse(),
+                config: config.clone(),
             }))
-            .service(Files::new("/media", config::Args::parse().media_path).show_files_listing())
+            .service(Files::new("/media", &config.media_path).show_files_listing())
             .service(hello)
             .service(list_media)
-    })
-    .bind((config.address, config.port))?
-    .run()
-    .await
+    });
+
+    server.bind((address, port))?.run().await
 }
