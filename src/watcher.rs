@@ -3,10 +3,10 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use crate::media::{self, Movie};
+use crate::media::{self, MediaItem};
 
 pub fn create_watcher(
-    media_files_mutex: Arc<Mutex<Vec<Movie>>>,
+    media_files_mutex: Arc<Mutex<Vec<MediaItem>>>,
     media_path: PathBuf,
 ) -> Result<notify::RecommendedWatcher, notify::Error> {
     notify::recommended_watcher(move |_| {

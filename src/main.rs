@@ -6,12 +6,12 @@ use clap::Parser;
 use notify::Watcher;
 use streamy::{
     config::{self, Args},
-    media::{scan_media, Movie},
+    media::{scan_media, MediaItem},
     watcher,
 };
 
 struct AppState {
-    media_files: Arc<Mutex<Vec<Movie>>>,
+    media_files: Arc<Mutex<Vec<MediaItem>>>,
 }
 type AppData = web::Data<AppState>;
 

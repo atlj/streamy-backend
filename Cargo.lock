@@ -1215,6 +1215,7 @@ dependencies = [
  "clap",
  "notify",
  "serde",
+ "serde_json",
  "walkdir",
 ]
 
