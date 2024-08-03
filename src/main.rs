@@ -16,9 +16,9 @@ struct AppState {
 }
 type AppData = web::Data<AppState>;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+#[get("/health")]
+async fn health_check() -> impl Responder {
+    HttpResponse::Ok().body("Alive")
 }
 
 #[get("/list-media")]
@@ -54,7 +54,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(state)
             .service(files_service)
-            .service(hello)
+            .service(health_check)
             .service(list_media)
     });
 
