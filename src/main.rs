@@ -11,6 +11,7 @@ use streamy::{
 };
 
 struct AppState {
+    // TODO: Use an RwLock instead
     media_files: Arc<Mutex<Vec<MediaItem>>>,
 }
 type AppData = web::Data<AppState>;
